@@ -1,0 +1,10 @@
+
+
+Microcontroller: NUC1261SG4AE
+	https://www.nuvoton.com/products/microcontrollers/arm-cortex-m0-mcus/nuc126-usb-series/
+
+	PDID Register value: 0x01205212
+
+	User Configuration Block: 
+	CONFIG[0]: 0xf73ffbbe 
+	CONFIG[1]: 0x0003e000
