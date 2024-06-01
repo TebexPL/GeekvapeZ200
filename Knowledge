@@ -1,10 +1,74 @@
 
 
-Microcontroller: NUC1261SG4AE
+Microcontroller: Nuvoton NUC1261SG4AE
 	https://www.nuvoton.com/products/microcontrollers/arm-cortex-m0-mcus/nuc126-usb-series/
 
 	PDID Register value: 0x01205212
 
+
+	APROM: 0x0 - 0x3E000 
+		Some kind of bootloader: 0x0 - 0x4000
+		Main program: 0x4000 - 0x3E000
+	Data flash: 0x3E000 - 0x40000
+	LDROM: 0x100000 - 0x101000
+		LDROM is empty
+	SPROM: 0x200000 - 0x200800
+		SPROM seems to be empty
+	
+
 	User Configuration Block: 
-	CONFIG[0]: 0xf73ffbbe 
-	CONFIG[1]: 0x0003e000
+		CONFIG[0]: 0xF73FFBBE 
+			Data flash enabled (bit 0 = 0)
+			Flash memory content not locked (bit 1 = 1)
+			Watchdog timer hardware disabled(bits 3, 4, 31  = 111)
+			Mass erase disabled (bit 5 = 1)
+			Boot from APROM with IAP (bits 6, 7 = 10)
+			All GPIO as input on startup (bit 10 = 0)
+			ICE enabled (bit 12 = 1)
+			Brown out reset disabled (bit 20 = 1)
+			Brown out voltage at 2.7V (bits 21, 22 = 01)
+			Brown out detection enabled (bit 23 = 0)
+			Internal RC as CPU clock (bit 26 = 1)
+			PF3,4 pins as GPIO (bit 27 = 0)
+			Watchdog timer clock controlled by LIRCEN (bit 30 = 1)
+			
+		CONFIG[1]: 0x0003E000
+			Data flash set at 0x3E000
+
+
+	Undocumented modes:
+		Removing batteries -> holding fire button -> Plugging in USB
+			This makes the early bootloader interrupt normal boot process
+			Some kind of non standard USB HID interface is initialised which might
+			be used to upgrade firmware  
+			Also, debug port (ICE/SWD) is enabled and can be used to communicate 
+			with MCU
+
+
+
+
+
+
+EEPROM: BoyaMicro BY25Q64AS
+	
+	Contains an array of all images displayed on screen.
+	Each image consists of a header and an array of pixels.
+	A C struct describing each image might look like this:
+
+		struct Image {
+			uint16_t unknown1;
+			uint16_t Width;
+			uint16_t Height;
+			uint16_t unknown2;
+			uint16_t image[];//Width*Height 16 bit pixels
+		};
+	
+	Each pixel contains Red, Green and Blue values packed into single 16bit value
+
+	Conversion from this 16 bit pixel into three 8bit color values might look like this:
+	
+		uint16_t pixel = /* Pixel value from eeprom */
+
+		uint8_t Blue =(pixel&0x1f)*8;
+		uint8_t Green = ((pixel>>5)&0x3F)*4;
+		uint8_t Red = ((pixel>>11)&0x1F)*8;
