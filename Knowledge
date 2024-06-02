@@ -45,7 +45,32 @@ Microcontroller: Nuvoton NUC1261SG4AE
 			with MCU
 
 
+	Main program:
+		Initial Pin configuration:
+			PORT A:
+				15-4, 2-1 = GPIO
+				3 = PWM1_CH2
+				0 = PWM1_CH5
+			PORT B:				
+				14-12, 10-9, 7-6, 4-0 = GPIO 
+				15 = ADC0_CH12
+				11 = ADC0_CH8
+				8 = ADC0_CH5
+				5 = ADC0_CH13
+			PORT C:
+				15-0 = GPIO
+			PORT D:
+				12-8, 6-0 = GPIO
+				15 = SPI1_CLK
+				14 = SPI1_MISO
+				13 = SPI1_MOSI
+				7 = PWM0_CH5
+			PORT E:
+				7-3, 1-0 = GPIO
+				2 = ADC0_CH9
 
+			PORT F:
+				7-0 = GPIO
 
 
 
